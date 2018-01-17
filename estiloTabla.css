@@ -1,0 +1,43 @@
+body{
+	background-color: black;
+	color: white;
+	font: normal normal uppercase helvetica, arial, serif;
+}
+}
+
+table{
+	 border-collapse: collapse;
+	 width: 65%;
+	 font: normal normal uppercase helvetica, arial, serif;
+	 
+}
+
+th, td{
+	text-align: left;
+	padding: 8px;
+}
+
+tr:nth-child(even){
+	background-color:#424242;
+} 
+
+.form{
+	position: relative;
+	width: 500px;
+	height: 700px;
+	padding-left: 20px;
+	padding-top: 15px;
+	background-color: #FACC2E;
+	border-radius: 20px;
+	margin: auto;
+}
+
+input[type=submit]{
+	position: relative;
+	width: 150px;
+	height: 40px;
+	border-radius: 20px;
+	margin-left: 50px;
+	border: 0px;
+	background-color: #01DF74;
+}

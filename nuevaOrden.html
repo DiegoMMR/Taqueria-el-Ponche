@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Nuevo Cliente</title>
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+</head>
+<body>
+	<div class="formFactura">
+		<form action="nuevaOrden.php" method="POST">
+			<p>Cantidad</p>
+			<label for="cantidad">Cuantos va a querer</label>
+			<input type="text" name="cantidad" placeholder="20" required>
+
+			<p>ID Plato</p>
+			<input type="text" name="codPlato" placeholder="3" required>
+
+			<p>ID Factura</p>
+			<input type="text" name="codFactura" placeholder="1" required>
+		
+			<br>
+			<br>
+			<input type="submit" value="Enviar">
+		</form>
+	</div>
+	<form action="index.html">
+    	<input type=submit value="Volver">
+	</form>
+</body>
+</html>

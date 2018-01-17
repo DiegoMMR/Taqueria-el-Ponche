@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Nuevo Cliente</title>
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+</head>
+<body>
+	<div class="formCliente">
+		<form action="ingresarCliente.php" method="POST">
+			<p>Cliente</p>
+			<label for="ID Cliente">Codigo del cliente</label>
+			<input type="text" name="codCliente" placeholder="Codigo cliente" required>
+
+			<p>Nit</p>
+			<label for="nit">Nuemro de Identificacion Trinutaria</label>
+			<input type="text" name="nit" placeholder="C/F" required>
+
+			<p>Nombre</p>
+			<input type="text" name="nombre" placeholder="Pancho" required>
+
+			<p>Apellido</p>
+			<input type="text" name="apellido" placeholder="Pistolas" required>
+
+			<p>Dirección</p>
+			<label for="Direccion">Tu hogar actual</label>
+			<textarea name="direccion" placeholder="Mi casa" required></textarea>
+
+			<p>Telefono</p>
+			<input type="text" name="telefono" placeholder="52487985" required>
+			
+			<br>
+			<br>
+			<input type="submit" value="Enviar">
+		</form>
+	</div>
+	<form action="index.html">
+    	<input type=submit value="Volver">
+	</form>
+</body>
+</html>

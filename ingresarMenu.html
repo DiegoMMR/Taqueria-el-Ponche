@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Nuevo Plato</title>
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+</head>
+<body>
+	<div class="form">
+		<form action="ingresarMenu.php" method="POST">
+			<p>ID Plato</p>
+			<label for="ID Plato">Codigo del plato</label>
+			<input type="text" name="IDPlato" placeholder="ID Plato" required>
+
+			<p>Nombre</p>
+			<label for="nombre">Nombre del plato</label>
+			<input type="text" name="nombre" placeholder="Tacotento" required>
+
+			<p>Descripción</p>
+			<label for="descripcion">Un resumen de lo que tiene el plato</label>
+			<textarea name="descripcion" placeholder="Tacos de marrana flaca" required></textarea>
+
+			<p>Precio</p>
+			<label for="precio">Tienen que pagar por algo</label>
+			<input type="text" name="precio" placeholder="15" required>
+			
+			<br>
+			<br>
+			<input type="submit" value="Enviar">
+		</form>
+	</div>
+	<form action="mostrarMenu.php">
+    	<input type=submit value="Ver Menu">
+	</form>
+	<br>
+	<form action="index.html">
+    	<input type=submit value="Volver">
+	</form>
+</body>
+</html>
