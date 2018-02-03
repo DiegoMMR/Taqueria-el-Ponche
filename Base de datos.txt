@@ -1,0 +1,130 @@
+CREATE TABLE clientes (
+    id_cliente  INTEGER NOT NULL,
+    nit         INTEGER NOT NULL,
+    nombre      VARCHAR(40),
+    apellido    VARCHAR(30),
+    direccion   VARCHAR(150),
+    telefono    INTEGER
+);
+
+ALTER TABLE clientes ADD CONSTRAINT clientes_pk PRIMARY KEY ( id_cliente);
+
+CREATE TABLE factura (
+    id_factura     INTEGER NOT NULL,
+    fecha          DATE,
+    clientes_id   INTEGER NOT NULL
+);
+
+ALTER TABLE factura ADD CONSTRAINT factura_pk PRIMARY KEY ( id_factura );
+
+CREATE TABLE menu (
+    id_plato                     INTEGER NOT NULL,
+    nombre_plato                 VARCHAR(50),
+    descripcion_plato            VARCHAR(150),
+    precio                       INTEGER
+);
+
+ALTER TABLE menu ADD CONSTRAINT menu_pk PRIMARY KEY ( id_plato);
+
+CREATE TABLE ordenes (
+    id_orden             INTEGER NOT NULL,
+    cantidad             INTEGER,
+    factura_id_plato 	 INTEGER NOT NULL,
+    factura_id_factura   INTEGER NOT NULL,
+    subtotal		 INTEGER
+);
+
+ALTER TABLE ordenes ADD CONSTRAINT ordenes_pk PRIMARY KEY ( id_orden);
+
+ALTER TABLE factura
+    ADD CONSTRAINT factura_clientes_fk FOREIGN KEY ( clientes_id )
+        REFERENCES clientes ( id_cliente );
+        
+ALTER TABLE ordenes
+    ADD CONSTRAINT factura_menu_fk FOREIGN KEY ( factura_id_plato )
+        REFERENCES menu ( id_plato);
+
+
+ALTER TABLE ordenes
+    ADD CONSTRAINT ordenes_factura_fk FOREIGN KEY ( factura_id_factura )
+        REFERENCES factura ( id_factura );
+
+#proceso ingresar datos que de una vez calcula el subtotal dependiendo de la cantidad ingresada
+DROP PROCEDURE IF EXISTS nuevaOrden;
+ 
+DELIMITER $$
+ 
+CREATE PROCEDURE nuevaOrden(
+    IN _cantidad INT,
+    IN _IDplato INT,
+    IN _IDFactura INT)
+BEGIN
+    DECLARE _subtotal INT;
+    DECLARE _precio INT;
+ 
+    SELECT precio  INTO _precio FROM menu WHERE id_plato = _IDplato;
+    SET _subtotal = _precio * _cantidad;
+
+    INSERT INTO ordenes(cantidad, factura_id_plato, factura_id_factura , subtotal) VALUES (_cantidad,_IDplato,_IDFactura,_subtotal);
+
+END $$
+DELIMITER ;
+
+
+CREATE VIEW 
+cocinero AS 
+SELECT ordenes.cantidad, menu.nombre_plato, ordenes.factura_id_factura
+FROM ordenes, menu
+WHERE ordenes.factura_id_plato = menu.id_plato
+
+#proceso para rebirir lo que debe pagar 
+DROP PROCEDURE IF EXISTS descripcionFactura;
+ 
+DELIMITER $$
+ 
+CREATE PROCEDURE descripcionFactura(
+    IN _IDFactura INT)
+BEGIN
+
+    SELECT ordenes.cantidad, menu.nombre_plato, menu.precio, ordenes.subtotal
+    FROM ordenes, menu
+    WHERE ordenes.factura_id_factura = _IDFactura AND  ordenes.factura_id_plato = menu.id_plato;  
+END $$
+DELIMITER ;
+
+#proceso para mostrar encabezado factura
+DROP PROCEDURE IF EXISTS encabezado;
+ 
+DELIMITER $$
+ 
+CREATE PROCEDURE encabezado(
+    IN _IDFactura INT)
+BEGIN
+
+    SELECT factura.id_factura, clientes.nombre, clientes.apellido, clientes.nit, factura.fecha
+    FROM factura, clientes
+    WHERE factura.clientes_id = clientes.id_cliente AND  factura.id_factura = _IDFactura;  
+END $$
+DELIMITER ;
+
+#trigger para validar precio
+DELIMITER $$
+CREATE TRIGGER validarPrecio BEFORE INSERT ON menu
+       FOR EACH ROW
+       BEGIN
+           IF NEW.precio < 0 THEN
+               SET NEW.precio = 15;
+           END IF;
+       END $$
+DELIMITER ;
+
+#trigger para validar cantidad
+DELIMITER $$
+CREATE TRIGGER validarCantidad BEFORE INSERT ON ordenes
+       FOR EACH ROW
+       BEGIN
+           IF NEW.cantidad < 0 THEN
+               SET NEW.cantidad = 1;
+           END IF;
+       END $$
+DELIMITER ;
